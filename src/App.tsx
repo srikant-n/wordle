@@ -1,10 +1,10 @@
-import './App.css'
 import WordProvider from './context/WordProvider'
+import Tile from './components/Tile'
 
 function App() {
   return (
    <WordProvider>
-    <div>App</div>
+    <div><Tile status="" /></div>
    </WordProvider>
   )
 }
