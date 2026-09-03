@@ -1,10 +1,4 @@
-
-
-interface TileProps {
-    letter?: string;
-    status: 'correct' | 'present' | 'absent' | '';
-}
-
+import type { TileProps } from "../types";
 
 /**
  * Renders a single tile in the wordle grid.
@@ -35,11 +29,11 @@ function Tile({ letter = '', status = '' }: TileProps) {
             case 'absent':
                 return 'text-white';
             default:
-                return 'text-gray-500';
+                return 'text-gray-600';
         }
     };
 
-    return <div className={`w-12 h-12 rounded-lg border-2 border-gray-300 ${getBgColor()} ${getTextColor()} uppercase font-bold text-4xl p-4`}>{letter}</div>;
+    return <div className={`w-12 h-12 rounded-lg border-2 border-gray-300 ${getBgColor()} ${getTextColor()} uppercase font-bold text-4xl text-center m-0 p-0`}>{letter}</div>;
 }
 
 export default Tile;

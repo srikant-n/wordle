@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { WordContext, WordDispatchContext } from "./WordContext";
 
-export const useWord = () => {
+export const useWordContext = () => {
     return useContext(WordContext);
 };
 

@@ -1,5 +1,7 @@
 import { useReducer } from "react";
-import { WordContext, WordDispatchContext, type WordContextType, type WordDispatchContextType, type LetterState } from "./WordContext";
+import type * as React from "react";
+import { WordContext, WordDispatchContext } from "./WordContext";
+import type { WordContextType, WordDispatchContextType, LetterState } from "../types";
 
 /**
  * Initial game state for the Wordle reducer.
@@ -8,8 +10,8 @@ const INITIAL_STATE: WordContextType = {
     word: "",
     usedWords: [],
     usedLetters: {},
-    maxGuesses: 6,
-    currentGuess: 0,
+    maxGuessCount: 6,
+    currentGuessNum: 0,
     isGameOver: false,
     isCorrect: false
 }
@@ -76,15 +78,15 @@ export const wordReducer = (state: WordContextType, action: WordDispatchContextT
                 newUsedLetters[letter] = wordState[index];
             });
 
-            const currentGuess = state.currentGuess + 1;
+            const currentGuessNum = state.currentGuessNum + 1;
             const isCorrect = action.payload === state.word;
-            const isGameOver = isCorrect || currentGuess >= state.maxGuesses;
+            const isGameOver = isCorrect || currentGuessNum >= state.maxGuessCount;
 
             return {
                 ...state,
                 usedWords: [...state.usedWords, [action.payload, wordState]],
                 usedLetters: newUsedLetters,
-                currentGuess,
+                currentGuessNum,
                 isCorrect,
                 isGameOver
             };
