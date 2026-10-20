@@ -66,7 +66,7 @@ export const wordReducer = (state: WordContextType, action: WordDispatchContextT
     switch (action.type) {
         case 'SET_WORD':
             return { ...INITIAL_STATE, word: action.payload };
-        case 'USE_WORD':
+        case 'SUBMIT_WORD':
             // Ignore duplicate guesses.
             if(state.usedWords.some(word => word[0] === action.payload)) {
                 return state;

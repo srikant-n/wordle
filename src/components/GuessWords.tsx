@@ -13,7 +13,7 @@ function WordTileGroup({letters, letterStates}: { letters: string[]; letterState
     );
 }
 
-export function GuessWords({currentGuess}: {currentGuess: string}) {
+function GuessWords({currentGuess}: {currentGuess: string}) {
     const { usedWords, maxGuessCount, currentGuessNum } = useWordContext();
     const emptyGuess = Array(5).fill('');
 
@@ -31,3 +31,5 @@ export function GuessWords({currentGuess}: {currentGuess: string}) {
         </div>
     )
 }
+
+export default GuessWords;

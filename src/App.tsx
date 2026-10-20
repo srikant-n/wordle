@@ -1,23 +1,42 @@
-import { GuessWords } from './components/GuessWords'
-import { Keyboard } from './components/Keyboard'
 import { useState } from 'react'
+import GuessWords from './components/GuessWords'
+import Keyboard from './components/Keyboard'
+import { VALID_WORDS } from './data/validWords';
+import { useWordDispatch } from './context/WordContextHooks';
+
+const WORD_LENGTH = 5;
 
 function App() {
+  const dispatch = useWordDispatch();
   const [currentGuess, setCurrentGuess] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const onKeyClick = (key: string) => {
     if (key === 'ENTER') {
-      
+      if (currentGuess.length === WORD_LENGTH) {
+        if (VALID_WORDS.includes(currentGuess.toLowerCase())) {
+          dispatch?.({ type: 'SUBMIT_WORD', payload: currentGuess });
+          setErrorMessage('');
+          setCurrentGuess('');
+        } else {
+          setErrorMessage('Not a valid word');
+        }
+      }
     } else if (key === 'BACKSPACE') {
       setCurrentGuess(currentGuess.slice(0, -1));
+      setErrorMessage('');
     } else {
-      setCurrentGuess(currentGuess + key);
+      if (currentGuess.length < WORD_LENGTH) {
+        setCurrentGuess(currentGuess + key);
+        setErrorMessage('');
+      }
     }
   };
   
   return (
-   <div>
+   <div className="flex flex-col gap-4 items-center justify-start min-h-screen p-4">
     <GuessWords currentGuess={currentGuess} />
+    <p className="text-red-500 m-2 h-5">{errorMessage}</p>
     <Keyboard onKeyClick={onKeyClick} />
    </div>
   )
