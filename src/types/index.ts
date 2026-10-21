@@ -2,7 +2,7 @@ export type LetterState = "correct" | "present" | "absent" | "";
 
 export type WordContextType = {
     word: string;
-    usedWords: [string, LetterState[]][];
+    usedWords: { [key: string]: LetterState[] };
     usedLetters: { [key: string]: LetterState };
     maxGuessCount: number;
     currentGuessNum: number;

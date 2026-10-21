@@ -2,24 +2,33 @@ import { useState } from 'react'
 import GuessWords from './components/GuessWords'
 import Keyboard from './components/Keyboard'
 import { VALID_WORDS } from './data/validWords';
-import { useWordDispatch } from './context/WordContextHooks';
+import { useWordContext, useWordDispatch } from './context/WordContextHooks';
 
 const WORD_LENGTH = 5;
 
 function App() {
   const dispatch = useWordDispatch();
+  const { usedWords, isCorrect } = useWordContext();
   const [currentGuess, setCurrentGuess] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  // Increments on each error to force the shake animation to replay
+  const [shakeKey, setShakeKey] = useState(0);
 
   const onKeyClick = (key: string) => {
     if (key === 'ENTER') {
       if (currentGuess.length === WORD_LENGTH) {
         if (VALID_WORDS.includes(currentGuess.toLowerCase())) {
+          if (usedWords[currentGuess]) {
+            setErrorMessage('Word already used');
+            setShakeKey(prev => prev + 1);
+            return;
+          }
           dispatch?.({ type: 'SUBMIT_WORD', payload: currentGuess });
           setErrorMessage('');
           setCurrentGuess('');
         } else {
           setErrorMessage('Not a valid word');
+          setShakeKey(prev => prev + 1);
         }
       }
     } else if (key === 'BACKSPACE') {
@@ -35,7 +44,7 @@ function App() {
   
   return (
    <div className="flex flex-col gap-4 items-center justify-start min-h-screen p-4">
-    <GuessWords currentGuess={currentGuess} />
+    <GuessWords currentGuess={currentGuess} hasError={!!errorMessage} shakeKey={shakeKey} />
     <p className="text-red-500 m-2 h-5">{errorMessage}</p>
     <Keyboard onKeyClick={onKeyClick} />
    </div>

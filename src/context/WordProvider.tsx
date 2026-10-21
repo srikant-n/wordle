@@ -8,7 +8,7 @@ import type { WordContextType, WordDispatchContextType, LetterState } from "../t
  */
 const INITIAL_STATE: WordContextType = {
     word: "",
-    usedWords: [],
+    usedWords: {},
     usedLetters: {},
     maxGuessCount: 6,
     currentGuessNum: 0,
@@ -68,7 +68,7 @@ export const wordReducer = (state: WordContextType, action: WordDispatchContextT
             return { ...INITIAL_STATE, word: action.payload };
         case 'SUBMIT_WORD':
             // Ignore duplicate guesses.
-            if(state.usedWords.some(word => word[0] === action.payload)) {
+            if(state.usedWords[action.payload]) {
                 return state;
             }
             const wordState = getWordState(state.word, action.payload);
@@ -84,7 +84,7 @@ export const wordReducer = (state: WordContextType, action: WordDispatchContextT
 
             return {
                 ...state,
-                usedWords: [...state.usedWords, [action.payload, wordState]],
+                usedWords: { ...state.usedWords, [action.payload]: wordState },
                 usedLetters: newUsedLetters,
                 currentGuessNum,
                 isCorrect,
