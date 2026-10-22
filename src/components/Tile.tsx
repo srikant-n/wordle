@@ -34,7 +34,7 @@ function Tile({ letter = "", status = "" }: TileProps) {
 
   return (
     <div
-      className={`w-12 h-12 rounded-lg border-2 border-gray-300 ${getBgColor()} ${getTextColor()} uppercase font-bold text-4xl text-center m-0 p-0`}
+      className={`w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-lg border-2 border-gray-300 ${getBgColor()} ${getTextColor()} uppercase font-bold text-4xl flex items-center justify-center m-0 p-0`}
     >
       {letter}
     </div>

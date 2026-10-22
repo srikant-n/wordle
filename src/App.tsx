@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GuessWords from "./components/GuessWords";
 import Keyboard from "./components/Keyboard";
+import GameModal from "./components/GameModal";
 import { VALID_WORDS } from "./data/validWords";
+import { WORDLE_WORDS } from "./data/wordleWords";
 import { useWordContext, useWordDispatch } from "./context/WordContextHooks";
 
 const WORD_LENGTH = 5;
 
 function App() {
   const dispatch = useWordDispatch();
-  const { usedWords, isCorrect } = useWordContext();
+  const { usedWords, isCorrect, isGameOver } = useWordContext();
   const [currentGuess, setCurrentGuess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   // Increments on each error to force the shake animation to replay
   const [shakeKey, setShakeKey] = useState(0);
+
+  useEffect(() => {
+    const randomWord = WORDLE_WORDS[Math.floor(Math.random() * WORDLE_WORDS.length)];
+    console.log(randomWord);
+    dispatch?.({ type: "SET_WORD", payload: randomWord });
+  }, []);
 
   const onKeyClick = (key: string) => {
     if (key === "ENTER") {
@@ -43,10 +51,11 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-start min-h-screen p-4">
+    <div className="flex flex-col gap-4 items-center justify-start min-h-screen p-4 md:pt-8 lg:pt-12">
       <GuessWords currentGuess={currentGuess} hasError={!!errorMessage} shakeKey={shakeKey} />
       <p className="text-red-500 m-2 h-5">{errorMessage}</p>
       <Keyboard onKeyClick={onKeyClick} />
+      {isGameOver && <GameModal />}
     </div>
   );
 }

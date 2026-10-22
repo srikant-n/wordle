@@ -70,26 +70,27 @@ export const wordReducer = (
 ): WordContextType => {
   switch (action.type) {
     case "SET_WORD":
-      return { ...INITIAL_STATE, word: action.payload };
+      return { ...INITIAL_STATE, word: action.payload.toUpperCase() };
     case "SUBMIT_WORD":
+      const upperCaseWord = action.payload.toUpperCase();
       // Ignore duplicate guesses.
-      if (state.usedWords[action.payload]) {
+      if (state.usedWords[upperCaseWord]) {
         return state;
       }
-      const wordState = getWordState(state.word, action.payload);
+      const wordState = getWordState(state.word, upperCaseWord);
       const newUsedLetters = { ...state.usedLetters };
       // Track the best-known state for each letter used in this guess.
-      action.payload.split("").forEach((letter, index) => {
+      upperCaseWord.split("").forEach((letter, index) => {
         newUsedLetters[letter] = wordState[index];
       });
 
       const currentGuessNum = state.currentGuessNum + 1;
-      const isCorrect = action.payload === state.word;
+      const isCorrect = upperCaseWord === state.word;
       const isGameOver = isCorrect || currentGuessNum >= state.maxGuessCount;
 
       return {
         ...state,
-        usedWords: { ...state.usedWords, [action.payload]: wordState },
+        usedWords: { ...state.usedWords, [upperCaseWord]: wordState },
         usedLetters: newUsedLetters,
         currentGuessNum,
         isCorrect,

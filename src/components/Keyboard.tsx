@@ -36,13 +36,13 @@ export interface KeyboardProps {
 const getKeyBgColor = (state: LetterState): string => {
   switch (state) {
     case "correct":
-      return "bg-green-500 active:bg-green-600";
+      return "bg-green-300 active:bg-green-400";
     case "present":
-      return "bg-yellow-500 active:bg-yellow-600";
+      return "bg-yellow-300 active:bg-yellow-400";
     case "absent":
-      return "bg-gray-500 active:bg-gray-600";
+      return "bg-gray-100 active:bg-gray-200";
     default:
-      return "bg-gray-200 hover:bg-gray-300 active:bg-gray-400";
+      return "bg-gray-300 hover:bg-gray-400 active:bg-gray-500";
   }
 };
 
@@ -115,9 +115,9 @@ function Keyboard({ onKeyClick }: KeyboardProps) {
   }, [onKeyClick]);
 
   return (
-    <div className="flex flex-col gap-2" onClick={handleContainerClick}>
+    <div className="flex flex-col gap-2 lg:gap-3" onClick={handleContainerClick}>
       {CONFIGURED_ROWS.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex gap-2 justify-center">
+        <div key={rowIndex} className="flex gap-2 lg:gap-3 justify-center">
           {row.map(({ key, label, isSpecial }) => {
             const letterState = usedLetters[key];
 
@@ -125,7 +125,7 @@ function Keyboard({ onKeyClick }: KeyboardProps) {
               <button
                 key={key}
                 id={key}
-                className={`${isSpecial ? "px-4" : "w-9"} h-12 rounded-md font-bold uppercase text-sm flex items-center justify-center text-black ${getKeyBgColor(letterState)} transition-colors`}
+                className={`${isSpecial ? "px-4" : "w-9 md:w-12 lg:w-14"} h-12 md:h-14 lg:h-16 rounded-md font-bold uppercase text-sm lg:text-base flex items-center justify-center text-black ${getKeyBgColor(letterState)} transition-colors`}
               >
                 {label}
               </button>
